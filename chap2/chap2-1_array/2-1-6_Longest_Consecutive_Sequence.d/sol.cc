@@ -7,7 +7,7 @@ class Solution {
 public:
     int longestConsecutive(vector<int>& nums) {
         unordered_map<int, bool> used;
-        auto max_len = 1;
+        auto max_len = 0;
         for (auto n : nums) used[n] = false;
         
         for (auto n : nums) {

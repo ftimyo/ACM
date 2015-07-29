@@ -8,7 +8,7 @@ class Solution {
 public:
     int longestConsecutive(vector<int>& nums) {
         unordered_map<int, int> seqs;
-        int mx_len = 1;
+        int mx_len = 0;
         for (auto n : nums) {
             if (seqs.find(n) != end(seqs)) continue;
             auto& curr = seqs[n] = 1;
