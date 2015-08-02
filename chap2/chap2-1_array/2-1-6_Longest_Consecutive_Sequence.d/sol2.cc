@@ -6,24 +6,17 @@ using namespace std;
 
 class Solution {
 public:
-	int longestConsecutive(vector<int>& nums) {
-		unordered_map<int, int> seqs;
-		int mx_len = 0;
-		for (auto n : nums) {
-			if (seqs.find(n) != end(seqs)) continue;
-			auto& curr = seqs[n] = 1;
-			auto left = 0, right = 0, pre = n - 1, next = n + 1;
-			if (seqs.find(pre) != end(seqs)) {
-				left = seqs[pre];
-				curr += left;
-			}
-			if (seqs.find(next) != end(seqs)) {
-				right = seqs[next];
-				curr += right;
-			}
-			seqs[n - left] = seqs[n + right] = curr;
-			mx_len = max(curr, mx_len);
-		}
-		return mx_len;
-	}
+    int longestConsecutive(vector<int>& nums) {
+        unordered_map<int, int> q;
+        auto lmx = 1;
+        for (auto i : nums) {
+            if (q.find(i) != end(q)) continue;
+            auto n = q.insert({i, 1}).first, right = q.find(i + 1), left = q.find(i - 1);
+            if (left != end(q)) left = q.find(i - left->second); else left = n;
+            if (right != end(q)) right = q.find(i + right->second); else right = n;
+            auto l = left->second = right->second = right->first - left->first + 1;
+            lmx = max(l, lmx);
+        }
+        return lmx;
+    }
 };
