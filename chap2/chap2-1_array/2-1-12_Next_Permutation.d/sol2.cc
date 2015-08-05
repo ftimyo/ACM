@@ -12,7 +12,7 @@ class Solution {
 		auto j = prev(i);
 		for (; *j >= *i && i > b; --i, --j);
 		if (i == b) {reverse(b, e); return false;}
-		auto v = *j, c = find_if(reverse_iterator<It>(e), reverse_iterator<It>(j), [v](int x){return x > v;});
+		auto v = *j, c = find_if(reverse_iterator<It>(e), reverse_iterator<It>(i), [v](int x){return x > v;});
 		iter_swap(j, c); reverse(i, e);
 		return true;
 	}
