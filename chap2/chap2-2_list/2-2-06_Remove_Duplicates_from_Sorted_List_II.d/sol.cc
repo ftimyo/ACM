@@ -16,13 +16,17 @@ class Solution {
 public:
 	ListNode* deleteDuplicates(ListNode* head) {
 		if (!head || !head->next) return head;
-		auto p = head, q = head->next;
-		for (; q != nullptr; q = q->next) {
-			if (p->val != q->val) {p = q; continue;}
-			p->next = q->next;
-			delete q;
-			q = p;
+		ListNode h{0}, *p = &h, *q = head, *r = q->next;
+		p->next = q;
+		while (r != nullptr) {
+			if (r->val != q->val) {
+				p = q; q = r; r = q->next; continue;
+			}
+			while (r && r->val == q->val) r = r->next;
+			while (q != r) {auto d = q; q = q->next; delete d;}
+			p->next = q;
+			if (q) r = q->next;
 		}
-		return head;
+		return h.next;
 	}
 };
