@@ -20,7 +20,7 @@ public:
 		for (auto p = head; p != nullptr; p = p->next->next)
 			p->next = new H{*p};
 		for (auto p = head; p != nullptr; p = p->next->next)
-			if (p->next->random) p->next->random = p->next->random->next;
+			if (p->random) p->next->random = p->random->next;
 
 		H h{0};
 		for (auto p = head, q = &h; p != nullptr; p = p->next) {
