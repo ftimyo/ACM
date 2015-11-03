@@ -1,21 +1,18 @@
 #include <vector>
 using namespace std;
-
 class Solution {
 public:
 	int search(vector<int>& nums, int target) {
-		int first = 0, last = nums.size();
-		while (first != last) {
-			auto mid = (first + last) / 2;
+		int i = 0, j = nums.size();
+		while (i != j) {
+			auto mid = (i + j) / 2;
 			if (nums[mid] == target) return mid;
-			if (nums[first] < nums[mid]) {
-				if (nums[first] <= target && target < nums[mid]) last = mid;
-				else first = mid + 1;
-			} else if (nums[first] == nums[mid]) {
-				++first;
+			if (nums[i] < nums[mid]) {
+				if (nums[i] <= target && target < nums[mid]) j = mid;
+				else i = mid + 1;
 			} else {
-				if (nums[mid] < target && target <= nums[last - 1]) first = mid + 1;
-				else last = mid;
+				if (nums[mid] < target && target <= nums[j - 1]) i = mid + 1;
+				else j = mid;
 			}
 		}
 		return -1;
