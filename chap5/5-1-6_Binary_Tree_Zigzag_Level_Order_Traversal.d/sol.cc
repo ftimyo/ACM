@@ -14,27 +14,28 @@ struct TreeNode {
 class Solution {
 public:
 	std::vector<std::vector<int>> zigzagLevelOrder(TreeNode* root) {
-		std::vector<std::vector<int> > ret;
-		if (!root) return ret;
-		std::stack<TreeNode*> s1, s2;
-		s1.push(root);
-		while (!s1.empty() || !s2.empty()) {
-			std::vector<int> level;
-			while (!s1.empty()) {
-				auto p = s1.top(); s1.pop();
-				level.push_back(p->val);
-				if (p->left) s2.push(p->left);
-				if (p->right) s2.push(p->right);
+		std::vector<std::vector<int>> ret;
+		if (root == nullptr) return ret;
+		std::vector<std::stack<TreeNode*>> q(2);
+		int i = 0;
+		q[i].push(root);
+		while (!q[i].empty()) {
+			auto& qx = q[i];
+			auto& qy = q[1^i];
+			std::vector<int> lev;
+			while(!qx.empty()) {
+				auto p = qx.top(); qx.pop();
+				lev.push_back(p->val);
+				if (i == 0) {
+					if (p->left) qy.push(p->left);
+					if (p->right) qy.push(p->right);
+				} else {
+					if (p->right) qy.push(p->right);
+					if (p->left) qy.push(p->left);
+				}
 			}
-			if (!level.empty()) ret.emplace_back(std::move(level));
-			level.clear();
-			while (!s2.empty()) {
-				auto p = s2.top(); s2.pop();
-				level.push_back(p->val);
-				if (p->right) s1.push(p->right);
-				if (p->left) s1.push(p->left);
-			}
-			if (!level.empty()) ret.emplace_back(std::move(level));
+			ret.push_back(std::move(lev));
+			i^=1;
 		}
 		return ret;
 	}
