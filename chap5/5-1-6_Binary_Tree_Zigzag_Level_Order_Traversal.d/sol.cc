@@ -11,32 +11,32 @@ struct TreeNode {
 };
 /*
  */
+
 class Solution {
 public:
 	std::vector<std::vector<int>> zigzagLevelOrder(TreeNode* root) {
-		std::vector<std::vector<int>> ret;
-		if (root == nullptr) return ret;
-		std::vector<std::stack<TreeNode*>> q(2);
+		std::stack<TreeNode*> k[2];
+		std::vector<std::vector<int>> res;
 		int i = 0;
-		q[i].push(root);
-		while (!q[i].empty()) {
-			auto& qx = q[i];
-			auto& qy = q[1^i];
-			std::vector<int> lev;
-			while(!qx.empty()) {
-				auto p = qx.top(); qx.pop();
-				lev.push_back(p->val);
+		if (root != nullptr) k[i].push(root);
+		while (!k[i].empty()) {
+			auto j = 1^i;
+			std::vector<int> level;
+			while (!k[i].empty()) {
+				auto p = k[i].top();
+				k[i].pop();
 				if (i == 0) {
-					if (p->left) qy.push(p->left);
-					if (p->right) qy.push(p->right);
+					if (p->left != nullptr) k[j].push(p->left);
+					if (p->right != nullptr) k[j].push(p->right);
 				} else {
-					if (p->right) qy.push(p->right);
-					if (p->left) qy.push(p->left);
+					if (p->right != nullptr) k[j].push(p->right);
+					if (p->left != nullptr) k[j].push(p->left);
 				}
+				level.push_back(p->val);
 			}
-			ret.push_back(std::move(lev));
-			i^=1;
+			i = j;
+			if (!level.empty()) res.emplace_back(std::move(level));
 		}
-		return ret;
+		return res;
 	}
 };
